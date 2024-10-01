@@ -1,0 +1,67 @@
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY AUTO_INCREMENT,
+    Title VARCHAR(255) NOT NULL,
+    Author VARCHAR(255) NOT NULL,
+    ISBN VARCHAR(13) UNIQUE NOT NULL,
+    PublishedYear INT,
+    CopiesAvailable INT DEFAULT 0
+);
+CREATE TABLE Members (
+    MemberID INT PRIMARY KEY AUTO_INCREMENT,
+    Name VARCHAR(255) NOT NULL,
+    Email VARCHAR(255) UNIQUE NOT NULL,
+    Phone VARCHAR(15),
+    JoinDate DATE DEFAULT CURRENT_DATE
+);
+CREATE TABLE Transactions (
+    TransactionID INT PRIMARY KEY AUTO_INCREMENT,
+    BookID INT,
+    MemberID INT,
+    BorrowDate DATE DEFAULT CURRENT_DATE,
+    ReturnDate DATE,
+    FOREIGN KEY (BookID) REFERENCES Books(BookID),
+    FOREIGN KEY (MemberID) REFERENCES Members(MemberID)
+);
+INSERT INTO Books (Title, Author, ISBN, PublishedYear, CopiesAvailable) 
+VALUES ('The Great Gatsby', 'F. Scott Fitzgerald', '9780743273565', 1925, 3);
+Insert a Member
+
+INSERT INTO Members (Name, Email, Phone) 
+VALUES ('John Doe', 'john.doe@example.com', '123-456-7890');
+Insert a Transaction (Borrow a Book)
+
+INSERT INTO Transactions (BookID, MemberID, BorrowDate) 
+VALUES (1, 1, '2024-10-01');
+
+SET CopiesAvailable = CopiesAvailable - 1 
+WHERE BookID = 1; 
+
+SET Phone = '098-765-4321' 
+WHERE MemberID =1;
+Delete Data
+Delete a Book
+
+DELETE FROM Books 
+WHERE BookID = 1;
+Delete a Member
+
+
+DELETE FROM Members 
+WHERE MemberID = 1;
+Retrieve Data
+Retrieve All Books
+
+SELECT * FROM Books;
+Retrieve All Members
+
+SELECT * FROM Members;
+Retrieve All Transactions
+
+
+SELECT * FROM Transactions;
+Retrieve Transactions for a Specific Member
+
+SELECT t.TransactionID, b.Title, t.BorrowDate, t.ReturnDate 
+FROM Transactions t
+JOIN Books b ON t.BookID = b.BookID
+WHERE t.MemberID = 1;
